@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+
+
 @Controller
 public class RickAndMortyController {
 
@@ -14,7 +16,7 @@ public class RickAndMortyController {
     RickAndMortyService rickAndMortyService;
 
     @PostMapping("/input-nome-aluno")
-    public ResponseEntity<String> retornaPersonagem (@RequestBody String nome){
+    public ResponseEntity<String> retornaPersonagem (@RequestBody String nome)  {
        String personagem = rickAndMortyService.getPersonagemPorNomeAluno(nome);
        return ResponseEntity.ok(personagem);
     }
