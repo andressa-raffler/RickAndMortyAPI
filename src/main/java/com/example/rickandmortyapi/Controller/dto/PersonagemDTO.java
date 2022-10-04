@@ -1,4 +1,4 @@
-package com.example.rickandmortyapi.Service;
+package com.example.rickandmortyapi.Controller.dto;
 
 
 import lombok.Getter;

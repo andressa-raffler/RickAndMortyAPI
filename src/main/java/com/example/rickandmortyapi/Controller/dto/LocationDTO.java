@@ -1,10 +1,9 @@
-package com.example.rickandmortyapi.Service;
+package com.example.rickandmortyapi.Controller.dto;
 
 import lombok.Data;
 
 @Data
-public class OriginDTO {
+public class LocationDTO {
     private String name;
     private String url;
-
 }
