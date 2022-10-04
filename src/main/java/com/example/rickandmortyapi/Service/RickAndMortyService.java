@@ -1,6 +1,7 @@
 package com.example.rickandmortyapi.Service;
 
 
+import com.example.rickandmortyapi.Controller.dto.InfoDTO;
 import com.example.rickandmortyapi.Controller.dto.PersonagemDTO;
 import com.example.rickandmortyapi.Repository.RickAndMortyRepository;
 import com.example.rickandmortyapi.model.RickAndMorty;
@@ -11,6 +12,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 import java.util.Random;
+
+import static java.lang.Math.toIntExact;
 
 
 @Service
@@ -28,26 +31,34 @@ public class RickAndMortyService {
     }
     public String getUrlPagina(){
         Random r = new Random();
-        int numeroPagina = r.nextInt(42); //42 páginas disponiveis na minha API - implementar p/ paginas variaveis - pages - DTO
-        return "https://rickandmortyapi.com/api/character/?page="+numeroPagina;
+        InfoDTO infoDTO = new InfoDTO();
+        int getPaginaDaAPI = 0;
+        if(infoDTO.getPages() == null){
+            return "https://rickandmortyapi.com/api/character/?page=42"; //42 páginas disponiveis na minha API - implementar p/ paginas variaveis - pages - DTO
+        } else {
+            getPaginaDaAPI = toIntExact(infoDTO.getPages());
+            int numeroPagina = r.nextInt(getPaginaDaAPI);
+            return "https://rickandmortyapi.com/api/character/?page=" + numeroPagina;
+        }
     }
 
-    public RickAndMorty criarRickAndMorty (RickAndMorty rickAndMorty) {
-        return this.rickAndMortyRepository.save(rickAndMorty);
-    }
 
-    public RickAndMorty gravarPersonagem(String nome){
+    public RickAndMorty atualizarRickAndMorty(String nome){
        String personagem = getPersonagemPorNomeAluno(nome);
         Optional<RickAndMorty> optionalRickAndMorty = this.rickAndMortyRepository.findByNome(nome);
         if(optionalRickAndMorty.isPresent()){
             RickAndMorty rickAndMorty = optionalRickAndMorty.get();
             RickAndMorty rickAndMortyAtualizado = new RickAndMorty();
             rickAndMortyAtualizado.setId(rickAndMorty.getId());
-            rickAndMortyAtualizado.setNome(rickAndMortyAtualizado.getNome());
+            rickAndMortyAtualizado.setNome(rickAndMorty.getNome());
             rickAndMortyAtualizado.setPersonagem(personagem);
            return this.rickAndMortyRepository.save(rickAndMortyAtualizado); //devolve a própria entidade atualizada
+        } else {
+            RickAndMorty rickAndMorty = new RickAndMorty();
+            rickAndMorty.setNome(nome);
+            rickAndMorty.setPersonagem(getPersonagemPorNomeAluno(nome));
+            return this.rickAndMortyRepository.save(rickAndMorty);
         }
-        return null;
     }
 
 

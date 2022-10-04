@@ -9,4 +9,6 @@ public class InfoDTO {
     private String next;
     private String prev;
 
+
+
 }
